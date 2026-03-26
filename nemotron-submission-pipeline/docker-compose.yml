@@ -1,0 +1,32 @@
+services:
+  nvidia-dsl-package:
+    build: ./build_nvidia_dsl
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - nvidia-dsl:/kaggle/working
+  main_submission:
+    build: ./main_submission_notebook
+    deploy:
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: 1
+                  capabilities: [gpu]
+    volumes:
+      - nvidia-dsl:/nvidia-utility-script
+      - type: bind 
+        source: .
+        target: /kaggle/working
+    depends_on:
+      nvidia-dsl-package:
+        condition: service_completed_successfully
+    
+volumes:
+  nvidia-dsl:
