@@ -19,6 +19,8 @@ services:
                 - driver: nvidia
                   count: 1
                   capabilities: [gpu]
+    environment:
+      - KAGGLEHUB_CACHE=/kaggle/working  
     volumes:
       - nvidia-dsl:/nvidia-utility-script
       - type: bind 

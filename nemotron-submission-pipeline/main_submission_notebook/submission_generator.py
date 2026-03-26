@@ -16,8 +16,7 @@ print(
 )
 # Configuration
 MODEL_PATH = kagglehub.model_download(
-    "metric/nemotron-3-nano-30b-a3b-bf16/transformers/default",
-    '/kaggle/working')
+    "metric/nemotron-3-nano-30b-a3b-bf16/transformers/default")
 OUTPUT_DIR = "/kaggle/working"
 LORA_RANK = 32  # Can be set to a maximum of 32
 
