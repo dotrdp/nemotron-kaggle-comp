@@ -29,6 +29,8 @@ services:
     depends_on:
       nvidia-dsl-package:
         condition: service_completed_successfully
+    stdin_open: true
+    tty: true
     
 volumes:
   nvidia-dsl:

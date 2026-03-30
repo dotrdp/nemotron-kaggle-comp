@@ -11,3 +11,5 @@ wheels/
 
 # model download
 nemotron-submission-pipeline/models/*
+nemotron-submission-pipeline/outputs/*
+nemotron-submission-pipeline/README.md

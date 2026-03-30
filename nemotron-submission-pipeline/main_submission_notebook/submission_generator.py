@@ -17,13 +17,14 @@ print(
 # Configuration
 MODEL_PATH = kagglehub.model_download(
     "metric/nemotron-3-nano-30b-a3b-bf16/transformers/default")
-OUTPUT_DIR = "/kaggle/working"
+OUTPUT_DIR = "/kaggle/working/output"
 LORA_RANK = 32  # Can be set to a maximum of 32
 
 model = AutoModelForCausalLM.from_pretrained(MODEL_PATH,
-                                             device_map="auto",
                                              trust_remote_code=True,
+                                             device_map="auto",
                                              dtype=torch.bfloat16)
+
 # tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
 print("Model loaded successfully.")
 
@@ -42,10 +43,7 @@ lora_config = LoraConfig(
 model = get_peft_model(model, lora_config)
 model.print_trainable_parameters()
 
-# YOUR CODE HERE
-# --------------
-# model.train()
-# --------------
+# train model
 
 # Save Adapter
 print(f"Saving adapter to {OUTPUT_DIR}...")
@@ -53,6 +51,9 @@ model.save_pretrained(OUTPUT_DIR)
 
 import subprocess
 
-subprocess.run("zip -m submission.zip *", shell=True, check=True)
+subprocess.run("zip -m submission.zip *",
+               shell=True,
+               check=True,
+               cwd=OUTPUT_DIR)
 
 print('Done.')
