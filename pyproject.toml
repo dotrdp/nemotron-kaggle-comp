@@ -7,12 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "kagglehub>=1.0.0",
     "mamba-ssm>=2.3.1",
-    "nvidia-cutlass>=4.2.0.0",
+    "peft>=0.18.1",
     "polars>=1.39.3",
-    "sentence-transformers>=5.3.0",
-]
-
-[tool.uv.workspace]
-members = [
-    "nemotron-submission-pipeline/main_submission_notebook",
+    "transformers>=5.4.0",
 ]

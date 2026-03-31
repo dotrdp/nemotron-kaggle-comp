@@ -1,0 +1,58 @@
+import polars as pl
+
+# train = pl.read_csv('/train.csv')
+import kagglehub
+import mamba_ssm
+import torch
+from peft import LoraConfig, get_peft_model, get_peft_model_state_dict, TaskType
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import os
+
+print(
+    'WE ARE THE CHAMPIONSS MY FRIENDS, AND WE\'LL KEEP ON FIGHTING TILL THE ENDSSSSS!'
+)
+# Configuration
+
+os.environ['KAGGLEHUB_CACHE'] = "../nemotron-submission-pipeline/"
+MODEL_PATH = kagglehub.model_download(
+    "metric/nemotron-3-nano-30b-a3b-bf16/transformers/default")
+OUTPUT_DIR = "./output"
+LORA_RANK = 32  # Can be set to a maximum of 32
+
+model = AutoModelForCausalLM.from_pretrained(MODEL_PATH,
+                                             trust_remote_code=True,
+                                             device_map="auto",
+                                             dtype=torch.bfloat16)
+
+# tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
+print("Model loaded successfully.")
+
+# Initialize LoRA Adapter
+print(f"Initializing LoRA adapter with rank={LORA_RANK}...")
+lora_config = LoraConfig(
+    r=LORA_RANK,
+    lora_alpha=16,
+    target_modules=r".*\.(in_proj|out_proj|up_proj|down_proj)$",
+    lora_dropout=0.05,
+    bias="none",
+    task_type=TaskType.CAUSAL_LM,
+)
+
+# Apply LoRA to the model
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+
+# train model
+
+# Save Adapter
+print(f"Saving adapter to {OUTPUT_DIR}...")
+model.save_pretrained(OUTPUT_DIR)
+
+import subprocess
+
+subprocess.run("zip -m submission.zip *",
+               shell=True,
+               check=True,
+               cwd=OUTPUT_DIR)
+
+print('Done.')
