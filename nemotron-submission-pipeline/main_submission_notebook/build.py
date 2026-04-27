@@ -9,6 +9,7 @@ commands = [
     "uv pip install  --system --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128",
     "uv pip install  --system --no-build-isolation 'causal-conv1d>=1.4.0'",
     "uv pip install  --system --no-build-isolation 'git+https://github.com/state-spaces/mamba.git'",
+    "uv pip install  --system --no-build-isolation trl datasets",
 ]
 
 for cmd in commands:

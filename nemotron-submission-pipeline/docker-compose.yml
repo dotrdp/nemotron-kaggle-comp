@@ -26,6 +26,10 @@ services:
       - type: bind 
         source: .
         target: /kaggle/working
+      - datasets:/datasets
+      - type: bind
+        source: ../datasets/
+        target: /datasets
     depends_on:
       nvidia-dsl-package:
         condition: service_completed_successfully
@@ -34,3 +38,4 @@ services:
     
 volumes:
   nvidia-dsl:
+  datasets:
